@@ -1,0 +1,24 @@
+{
+    "contacts": [
+        {
+            "name": "Chairman Meow",
+            "number": "2101231234",
+            "email": "meow@catmail.com"
+        },
+        {
+            "name": "Cleocatra",
+            "number": "2101231234",
+            "email": "cleo@catmail.com"
+        },
+        {
+            "name": "Catalie Portman",
+            "number": "2101231234",
+            "email": "catly@catmail.com"
+        },
+        {
+            "name": "Margaret Scratcher",
+            "number": "2101231234",
+            "email": "marg@catmail.com"
+        }
+    ]
+}

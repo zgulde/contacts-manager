@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="contactsApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact List</title>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- bootstrap js -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <!-- angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="/js/app.js"></script>
+</head>
+<body ng-controller="ContactsController as ctrl">
+
+    <!-- header -->
+    <div class="container">
+        <div class="form-inline">
+            <h1>
+            Contacts Manager
+                <input type="text" class="form-control pull-right" placeholder="Contact Search" ng-model="contactSearch">
+            </h1>
+        </div>
+    </div>
+
+    <!-- table with contacts display -->
+    <div class="container">
+        <table class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th>
+            </tr>
+            <tr ng-repeat="contact in ctrl.contacts | filter:contactSearch">
+                <td>{{ contact.name }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ ctrl.formatPhoneNumber(contact.number) }}</td>
+                <td>
+                    <button class="btn btn-default btn-sm" ng-click="ctrl.populateModal($index)" data-toggle="modal" data-target="#edit-contact">Edit</button>
+                    <button class="btn btn-danger btn-sm" ng-click="ctrl.removeContact(contact)">Remove</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- add contact form -->
+    <div class="container">
+        <h2>Add Contact</h2>
+        <form ng-submit="ctrl.addContact(ctrl.newContact)">
+            <div class="form-group">
+                <label for="add-name">Name</label>
+                <input type="text" id="add-name" class="form-control" placeholder="Enter name" ng-model="ctrl.newContact.name" required>
+            </div>
+            <div class="form-group">
+                <label for="add-email">Email Address</label>
+                <input type="email" id="add-email" class="form-control" placeholder="Enter email" ng-model="ctrl.newContact.email" required>
+            </div>
+            <div class="form-group">
+                <label for="add-number">Phone Number</label>
+                <input type="text" id="add-number" class="form-control" placeholder="Enter phone number" ng-model="ctrl.newContact.number" required>
+            </div>
+            <div class="form-group">
+                <input type="reset" class="btn btn-default" value="Clear">
+                <button class="btn btn-success">Add Contact</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- edit contact modal -->
+    <div class="modal fade" id="edit-contact" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form ng-submit="ctrl.editContact(ctrl.editedContact)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Edit Contact</h4>
+                    </div>
+                    <div class="modal-body">
+                            <div class="form-group">
+                                <label for="edit-name">Name</label>
+                                <input id="edit-name" type="text" class="form-control" ng-model="ctrl.editedContact.name">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-email">Email address</label>
+                                <input id="edit-email" type="text" class="form-control" ng-model="ctrl.editedContact.email">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-number">Phone number</label>
+                                <input id="edit-number" type="text" class="form-control" ng-model="ctrl.editedContact.number">
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <input type="submit" class="btn btn-primary" value="Save changes">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

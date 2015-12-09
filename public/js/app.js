@@ -28,6 +28,7 @@ app.controller('ContactsController', ['$http', function($http){
     // pushes the contact object passed to the contacts array and resets the 
     // newContact object in order to clear out the add contact form
     this.addContact = function(contact){
+        contact.number = this.getRawNumber(contact.number);
         this.contacts.push(contact);
         this.newContact = {};
     };

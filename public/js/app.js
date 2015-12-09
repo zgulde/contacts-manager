@@ -35,9 +35,8 @@ app.controller('ContactsController', ['$http', function($http){
 
     // creates a js confirm dialog to confirm the removal of a contact from the 
     // contacts array
-    this.removeContact = function(contact){
-        var index = this.contacts.indexOf(contact);
-        if (confirm('Are you sure you want to remove ' + contact.name + '?')) {
+    this.removeContact = function(index){
+        if (confirm('Are you sure you want to remove ' + this.contacts[index].name + '?')) {
             this.contacts.splice(index, 1);
         }
     };

@@ -4,17 +4,25 @@ var app = angular.module('contactsApp', []);
 
 app.controller('ContactsController', ['$http', function($http){
 
-    // if a number is a 10 digit number in a variety of formats,  this function
-    // returns the nuber formatted like so 'xxx-xxx-xxxx'
-    // if it is not a 10 digit number it just returns the number
+    // takes a number and adds '-' as appropriate for a 10-digit number
     this.formatPhoneNumber = function(number){
-        var validNumber = /[\s\(]?(\d{3})\)?\s*[\s-\.]?\s*(\d{3})\s*[\s-\.]?\s*(\d{4})\s*$/;
-        if( !validNumber.test(number) ){
-            return number;
-        } else {
-            var matches = validNumber.exec(number);
-            return matches[1] + '-' + matches[2] + '-' + matches[3];
+        if (typeof number == 'undefined') return;
+
+        // get rid of anything that is not a number
+        number = this.getRawNumber(number);
+
+        if(number.length > 6){
+            number = number.slice(0,3) + '-' + number.slice(3,6) + '-' + number.slice(6,10);
+        }else if (number.length > 3) {
+            number = number.slice(0,3) + '-' + number.slice(3)
         }
+
+        return number;
+    };
+
+    // takes a string and returns only the digits in the string
+    this.getRawNumber = function (string){
+        return string.replace(/[^\d]/g, '');
     };
 
     // pushes the contact object passed to the contacts array and resets the 
@@ -47,6 +55,11 @@ app.controller('ContactsController', ['$http', function($http){
     this.editContact = function(editedContact){
         this.contacts[this.indexOfContactToEdit] = editedContact;
         $('#edit-contact').modal('toggle');
+    };
+
+    // formats the number property of the contactObject passed
+    this.onPhoneInputChange = function(contactObject){
+        contactObject.number = this.formatPhoneNumber(contactObject.number);
     };
 
     this.contacts = {};

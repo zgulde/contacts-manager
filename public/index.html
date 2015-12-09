@@ -60,7 +60,7 @@
             </div>
             <div class="form-group">
                 <label for="add-number">Phone Number</label>
-                <input type="text" id="add-number" class="form-control" placeholder="Enter phone number" ng-model="ctrl.newContact.number" required>
+                <input type="text" id="add-number" class="form-control" placeholder="Enter phone number" ng-model="ctrl.newContact.number" required ng-change="ctrl.onPhoneInputChange(ctrl.newContact)">
             </div>
             <div class="form-group">
                 <input type="reset" class="btn btn-default" value="Clear">
@@ -89,7 +89,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="edit-number">Phone number</label>
-                                <input id="edit-number" type="text" class="form-control" ng-model="ctrl.editedContact.number">
+                                <input id="edit-number" type="text" class="form-control" ng-model="ctrl.editedContact.number" ng-change="ctrl.onPhoneInputChange(ctrl.editedContact)">
                             </div>
                     </div>
                     <div class="modal-footer">

@@ -47,6 +47,7 @@ app.controller('ContactsController', ['$http', function($http){
     this.populateModal = function(contactIndex){
         this.editedContact = JSON.parse(JSON.stringify(this.contacts[contactIndex]));
         this.indexOfContactToEdit = contactIndex;
+        this.editedContact.number = this.formatPhoneNumber(this.editedContact.number);
     };
 
     // replaces the contact at the index stored by populateModal() with the 

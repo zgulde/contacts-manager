@@ -14,7 +14,7 @@ app.controller('ContactsController', ['$http', function($http){
         if(number.length > 6){
             number = number.slice(0,3) + '-' + number.slice(3,6) + '-' + number.slice(6,10);
         }else if (number.length > 3) {
-            number = number.slice(0,3) + '-' + number.slice(3)
+            number = number.slice(0,3) + '-' + number.slice(3);
         }
 
         return number;
@@ -28,6 +28,7 @@ app.controller('ContactsController', ['$http', function($http){
     // pushes the contact object passed to the contacts array and resets the 
     // newContact object in order to clear out the add contact form
     this.addContact = function(contact){
+        var self = this;
         contact.number = this.getRawNumber(contact.number);
         this.contacts.push(contact);
         this.newContact = {};
@@ -63,17 +64,23 @@ app.controller('ContactsController', ['$http', function($http){
         contactObject.number = this.formatPhoneNumber(contactObject.number);
     };
 
+    // requests the contact data from the server and sets the contacts object
+    // to the response
+    this.getContacts = function(){
+        var self = this;
+        
+        $http.get('/contacts').then(function(response){
+            self.contacts = response.data; 
+        }, function(){
+            console.log("Error!");
+        });
+    };
+
     this.contacts = {};
     this.newContact = {};
     this.editedContact = {};
     this.indexOfContactToEdit = -1;
 
-    // grab the contacts array data
-    var self = this;
-    $http.get('data.json').then(function(response){
-        self.contacts = response.data.contacts;  
-    }, function(){
-        console.log("Error!");
-    });
+    this.getContacts();
 
 }]);

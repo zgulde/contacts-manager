@@ -9,7 +9,7 @@ $createTableQuery = 'CREATE TABLE contacts(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     name VARCHAR(150) NOT NULL,
     email VARCHAR(165) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
+    number VARCHAR(20) NOT NULL,
     PRIMARY KEY (id)
 )';
 

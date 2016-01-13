@@ -30,7 +30,14 @@ app.controller('ContactsController', ['$http', function($http){
     this.addContact = function(contact){
         var self = this;
         contact.number = this.getRawNumber(contact.number);
-        this.contacts.push(contact);
+        $http.post('/contacts', {
+            "name": contact.name,
+            "email": contact.email,
+            "number": contact.number
+        });
+
+        this.getContacts();
+
         this.newContact = {};
     };
 

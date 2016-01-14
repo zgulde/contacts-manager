@@ -56,14 +56,8 @@ app.controller('ContactsController', ['$http', function($http){
     // stores the index of the contact to edit
     this.populateModal = function(id){
         var self = this;
-
-        $http.get('/contacts/' + id).then(function(response){
-            self.editedContact = response.data;
-            self.editedContact.number = self.formatPhoneNumber(self.editedContact.number);
-            self.getContacts();
-        }, function(){
-            console.log("Error!");
-        });
+        var editedContact = self.contacts.filter(contact => contact.id == id).pop();
+        editedContact = JSON.parse(JSON.stringify(editedContact));
     };
 
     // replaces the contact at the index stored by populateModal() with the 

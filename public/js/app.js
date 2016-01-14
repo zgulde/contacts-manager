@@ -42,7 +42,9 @@ app.controller('ContactsController', ['$http', function($http){
     this.removeContact = function(id){
         var self = this;
 
-        if (confirm('Are you sure you want to remove this contact?')) {
+        var name = self.contacts.filter(contact => contact.id == id).pop().name;
+
+        if (confirm('Are you sure you want to remove ' + name + '?')) {
             $http.delete('/contacts/' + id).then(function(){
                 self.getContacts();
             });

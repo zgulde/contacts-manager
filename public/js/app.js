@@ -41,11 +41,10 @@ app.controller('ContactsController', ['$http', function($http){
     this.addContact = function(newContact){
         var self = this;
         newContact.number = this.getRawNumber(newContact.number);
-        $http.post('/contacts', newContact).then(function(){
-            self.getContacts();
-        });
 
-        this.newContact = {};
+        $http.post('/contacts', newContact).then(self.getContacts.bind(self));
+
+        self.newContact = {};
     };
 
     /**
@@ -60,9 +59,7 @@ app.controller('ContactsController', ['$http', function($http){
         var name = self.contacts.filter(contact => contact.id == id).pop().name;
 
         if (confirm('Are you sure you want to remove ' + name + '?')) {
-            $http.delete('/contacts/' + id).then(function(){
-                self.getContacts();
-            });
+            $http.delete('/contacts/' + id).then(self.getContacts.bind(self), console.log);
         }
     };
 
@@ -75,6 +72,7 @@ app.controller('ContactsController', ['$http', function($http){
     this.populateModal = function(id){
         var editedContact = this.contacts.filter(contact => contact.id == id).pop();
         editedContact = JSON.parse(JSON.stringify(editedContact));
+        editedContact.number = this.formatPhoneNumber(editedContact.number);
         this.editedContact = editedContact;
     };
 
@@ -87,11 +85,10 @@ app.controller('ContactsController', ['$http', function($http){
      */
     this.editContact = function(id){
         var self = this;
-        $http.put('/contacts/' + id, self.editedContact).then(function(response){
-            self.getContacts();
-        }, function(){
-            console.log("Error!");
-        });
+
+        $http.put('/contacts/' + id, self.editedContact)
+             .then(self.getContacts.bind(self), console.log);
+
         $('#edit-contact').modal('toggle');
     };
 
@@ -121,7 +118,6 @@ app.controller('ContactsController', ['$http', function($http){
     this.contacts = [];
     this.newContact = {};
     this.editedContact = {};
-    this.indexOfContactToEdit = -1;
 
     this.getContacts();
 

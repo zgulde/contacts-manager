@@ -24,8 +24,8 @@ $app->post('/contacts', function($request, $response, $args)
     $newContact = $request->getParsedBody();
 
     $contact = new Contact();
-    $contact->name = $newContact['name'];
-    $contact->email = $newContact['email'];
+    $contact->name   = $newContact['name'];
+    $contact->email  = $newContact['email'];
     $contact->number = $newContact['number'];
 
     $contact->save();
@@ -41,13 +41,20 @@ $app->get('/contacts', function($request, $response, $args)
     return $response;
 });
 
-$app->put('/contacts[/{id}]', function($request, $response, $args)
+$app->get('/contacts/{id}', function($request, $response, $args)
+{
+    $contact = Contact::find($args['id']);
+    $response->write($contact->toJson());
+    return $response;
+});
+
+$app->put('/contacts/{id}', function($request, $response, $args)
 {
     $response->write('update');
     return $response;
 });
 
-$app->delete('/contacts[/{id}]', function($request, $response, $args)
+$app->delete('/contacts/{id}', function($request, $response, $args)
 {
     // delete contact from db
 });

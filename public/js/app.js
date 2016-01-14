@@ -4,7 +4,12 @@ var app = angular.module('contactsApp', []);
 
 app.controller('ContactsController', ['$http', function($http){
 
-    // takes a number and adds '-' as appropriate for a 10-digit number
+    /**
+     * adds dashes to a number string as appropriate for a ten-digit phone
+     * number
+     * @param  number : the number, as a string to format
+     * @return string the formatted number
+     */
     this.formatPhoneNumber = function(number){
         if (typeof number == 'undefined') return;
 
@@ -20,13 +25,19 @@ app.controller('ContactsController', ['$http', function($http){
         return number;
     };
 
-    // takes a string and returns only the digits in the string
+    /**
+     * takes a string and returns only the numbers in the string
+     */
     this.getRawNumber = function (string){
         return string.replace(/[^\d]/g, '');
     };
 
-    // pushes the contact object passed to the contacts array and resets the 
-    // newContact object in order to clear out the add contact form
+    /**
+     * sets the number property of the newContact object to the raw number, then
+     * sends a post request to the server with the newContact object
+     * 
+     * @param newContact : contact object to add to the database
+     */
     this.addContact = function(newContact){
         var self = this;
         newContact.number = this.getRawNumber(newContact.number);
@@ -37,8 +48,12 @@ app.controller('ContactsController', ['$http', function($http){
         this.newContact = {};
     };
 
-    // creates a js confirm dialog to confirm the removal of a contact from the 
-    // contacts array
+    /**
+     * creates a js confirm dialog to confirm the removal of a contact from the
+     * contacts array
+     * 
+     * @param id : id of the contact to delete
+     */
     this.removeContact = function(id){
         var self = this;
 
@@ -51,21 +66,27 @@ app.controller('ContactsController', ['$http', function($http){
         }
     };
 
-    // takes the index of a contact in the contacts array and stores that 
-    // contact in the editedContact object
-    // stores the index of the contact to edit
+    /**
+     * searches the contacts array for the contact with an id matching the id 
+     * passed, creates a copy of the object and sets this.edited contact to it
+     * 
+     * @param  id : id of the contact to get
+     */
     this.populateModal = function(id){
-        var self = this;
-        var editedContact = self.contacts.filter(contact => contact.id == id).pop();
+        var editedContact = this.contacts.filter(contact => contact.id == id).pop();
         editedContact = JSON.parse(JSON.stringify(editedContact));
+        this.editedContact = editedContact;
     };
 
-    // replaces the contact at the index stored by populateModal() with the 
-    // contact object passed to it
-    // closes the edit contact modal
+    /**
+     * sends a put request to the server update the contact with the id that is 
+     * passed
+     * closes the edit contact modal
+     * 
+     * @param  id : id of the contact to edit
+     */
     this.editContact = function(id){
         var self = this;
-        // this.contacts[this.indexOfContactToEdit] = editedContact;
         $http.put('/contacts/' + id, self.editedContact).then(function(response){
             self.getContacts();
         }, function(){
@@ -74,13 +95,19 @@ app.controller('ContactsController', ['$http', function($http){
         $('#edit-contact').modal('toggle');
     };
 
-    // formats the number property of the contactObject passed
+    /**
+     * calls formatPhoneNumber on the number of the contactObject passed
+     * 
+     * @param contactObject : an object representing a contact
+     */
     this.onPhoneInputChange = function(contactObject){
         contactObject.number = this.formatPhoneNumber(contactObject.number);
     };
 
-    // requests the contact data from the server and sets the contacts object
-    // to the response
+    /**
+     * requests the contact data from the server and sets the contacts object
+     * to the response
+     */
     this.getContacts = function(){
         var self = this;
         
@@ -91,7 +118,7 @@ app.controller('ContactsController', ['$http', function($http){
         });
     };
 
-    this.contacts = {};
+    this.contacts = [];
     this.newContact = {};
     this.editedContact = {};
     this.indexOfContactToEdit = -1;

@@ -42,7 +42,8 @@ app.controller('ContactsController', ['$http', function($http){
         var self = this;
         newContact.number = this.getRawNumber(newContact.number);
 
-        $http.post('/contacts', newContact).then(self.getContacts.bind(self));
+        $http.post('/contacts', newContact)
+             .then(self.getContacts.bind(self), console.log);
 
         self.newContact = {};
     };
@@ -59,7 +60,8 @@ app.controller('ContactsController', ['$http', function($http){
         var name = self.contacts.filter(contact => contact.id == id).pop().name;
 
         if (confirm('Are you sure you want to remove ' + name + '?')) {
-            $http.delete('/contacts/' + id).then(self.getContacts.bind(self), console.log);
+            $http.delete('/contacts/' + id)
+                 .then(self.getContacts.bind(self), console.log);
         }
     };
 

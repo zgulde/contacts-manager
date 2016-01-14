@@ -29,14 +29,11 @@ app.controller('ContactsController', ['$http', function($http){
     // newContact object in order to clear out the add contact form
     this.addContact = function(contact){
         var self = this;
+        console.log(contact);
         contact.number = this.getRawNumber(contact.number);
-        $http.post('/contacts', {
-            "name": contact.name,
-            "email": contact.email,
-            "number": contact.number
+        $http.post('/contacts', contact).then(function(){
+            self.getContacts();
         });
-
-        this.getContacts();
 
         this.newContact = {};
     };
@@ -52,17 +49,31 @@ app.controller('ContactsController', ['$http', function($http){
     // takes the index of a contact in the contacts array and stores that 
     // contact in the editedContact object
     // stores the index of the contact to edit
-    this.populateModal = function(contactIndex){
-        this.editedContact = JSON.parse(JSON.stringify(this.contacts[contactIndex]));
-        this.indexOfContactToEdit = contactIndex;
-        this.editedContact.number = this.formatPhoneNumber(this.editedContact.number);
+    this.populateModal = function(id){
+        var self = this;
+
+        $http.get('/contacts/' + id).then(function(response){
+            self.editedContact = response.data;
+            self.editedContact.number = self.formatPhoneNumber(self.editedContact.number);
+            self.getContacts();
+        }, function(){
+            console.log("Error!");
+        });
     };
 
     // replaces the contact at the index stored by populateModal() with the 
     // contact object passed to it
     // closes the edit contact modal
     this.editContact = function(editedContact){
-        this.contacts[this.indexOfContactToEdit] = editedContact;
+        var self = this;
+        // this.contacts[this.indexOfContactToEdit] = editedContact;
+        $http.put('/contacts/' + editedContact.id, {
+            
+        }).then(function(response){
+            console.log(response);
+        }, function(){
+            console.log("Error!");
+        });
         $('#edit-contact').modal('toggle');
     };
 

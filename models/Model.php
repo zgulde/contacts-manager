@@ -164,4 +164,12 @@ abstract class Model {
     {
         return json_encode($this->attributes);
     }
+
+    /**
+     * returns an associative array representation of the contact
+     */
+    public function toArray()
+    {
+        return $this->attributes;
+    }
 }

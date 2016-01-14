@@ -7,6 +7,7 @@ app.controller('ContactsController', ['$http', function($http){
     /**
      * adds dashes to a number string as appropriate for a ten-digit phone
      * number
+     * 
      * @param  number : the number, as a string to format
      * @return string the formatted number
      */

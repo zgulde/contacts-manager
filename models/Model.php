@@ -5,7 +5,7 @@ abstract class Model {
     protected static $dbc;
     protected static $table;
 
-    private $attributes = array();
+    protected $attributes = [];
 
     /*
      * Constructor
@@ -52,6 +52,8 @@ abstract class Model {
      */
     public function save()
     {
+        self::dbConnect();
+        
         $table = static::$table;
 
         if ($this->id != '') {
@@ -153,8 +155,10 @@ abstract class Model {
     {
         self::dbConnect();
         $table = static::$table;
-        $query = "DELETE FROM $table WHERE id=$id";
-        self::$dbc->query($query);
+        $query = "DELETE FROM $table WHERE id = :id";
+        $stmt = self::$dbc->prepare($query);
+        $stmt->bindValue(':id'. $id, PDO::PARAM_INT);
+        $stmt->execute();
     }
 
     /**

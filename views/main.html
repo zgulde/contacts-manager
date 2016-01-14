@@ -39,8 +39,8 @@
                 <td>{{ contact.email }}</td>
                 <td>{{ ctrl.formatPhoneNumber(contact.number) }}</td>
                 <td>
-                    <button class="btn btn-default btn-sm" ng-click="ctrl.populateModal($index)" data-toggle="modal" data-target="#edit-contact">Edit</button>
-                    <button class="btn btn-danger btn-sm" ng-click="ctrl.removeContact($index)">Remove</button>
+                    <button class="btn btn-default btn-sm" ng-click="ctrl.populateModal(contact.id)" data-toggle="modal" data-target="#edit-contact">Edit</button>
+                    <button class="btn btn-danger btn-sm" ng-click="ctrl.removeContact(contact.id)">Remove</button>
                 </td>
             </tr>
         </table>
@@ -73,7 +73,7 @@
     <div class="modal fade" id="edit-contact" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form ng-submit="ctrl.editContact(ctrl.editedContact)">
+                <form ng-submit="ctrl.editContact(ctrl.editedContact.id)">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">Edit Contact</h4>

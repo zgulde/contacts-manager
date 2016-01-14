@@ -27,11 +27,10 @@ app.controller('ContactsController', ['$http', function($http){
 
     // pushes the contact object passed to the contacts array and resets the 
     // newContact object in order to clear out the add contact form
-    this.addContact = function(contact){
+    this.addContact = function(newContact){
         var self = this;
-        console.log(contact);
-        contact.number = this.getRawNumber(contact.number);
-        $http.post('/contacts', contact).then(function(){
+        newContact.number = this.getRawNumber(newContact.number);
+        $http.post('/contacts', newContact).then(function(){
             self.getContacts();
         });
 
@@ -64,13 +63,11 @@ app.controller('ContactsController', ['$http', function($http){
     // replaces the contact at the index stored by populateModal() with the 
     // contact object passed to it
     // closes the edit contact modal
-    this.editContact = function(editedContact){
+    this.editContact = function(id){
         var self = this;
         // this.contacts[this.indexOfContactToEdit] = editedContact;
-        $http.put('/contacts/' + editedContact.id, {
-            
-        }).then(function(response){
-            console.log(response);
+        $http.put('/contacts/' + id, self.editedContact).then(function(response){
+            self.getContacts();
         }, function(){
             console.log("Error!");
         });

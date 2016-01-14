@@ -35,7 +35,6 @@ $app->post('/contacts', function($request, $response, $args)
 
 $app->get('/contacts', function($request, $response, $args) 
 {
-    // return all contacts
     $response->withJson(Contact::all());
     return $response;
 });
@@ -53,8 +52,8 @@ $app->put('/contacts/{id}', function($request, $response, $args)
 
     $contact = Contact::find($args['id']);
 
-    $contact->name = $editedContact['name'];
-    $contact->email = $editedContact['email'];
+    $contact->name   = $editedContact['name'];
+    $contact->email  = $editedContact['email'];
     $contact->number = $editedContact['number'];
 
     $contact->save();
@@ -66,6 +65,7 @@ $app->put('/contacts/{id}', function($request, $response, $args)
 $app->delete('/contacts/{id}', function($request, $response, $args)
 {
     Contact::delete($args['id']);
+
     return $response;
 });
 

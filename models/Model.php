@@ -156,4 +156,12 @@ abstract class Model {
         $query = "DELETE FROM $table WHERE id=$id";
         self::$dbc->query($query);
     }
+
+    /**
+     * Return a json string representation of the model instance
+     */
+    public function toJson()
+    {
+        return json_encode($this->attributes);
+    }
 }
